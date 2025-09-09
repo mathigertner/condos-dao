@@ -34,6 +34,18 @@ This project uses the **Minimal Proxy Clone pattern (EIP-1167)** for extremely g
 - **Isolated storage**: Each DAO operates independently with completely separate storage
 - **Battle-tested**: Used by major protocols like Gnosis Safe and Uniswap
 
+## 🔐 ZK Voting Process
+
+The system combines whitelist security with complete voting anonymity:
+
+1. **Whitelist Registration**: Only whitelisted addresses can register ZK commitments
+2. **Identity Generation**: Each member generates a secret identity (trapdoor + nullifier) off-chain
+3. **Commitment Registration**: Members register their commitment linked to their whitelisted address
+4. **Merkle Tree**: All commitments form a Merkle tree defining valid voters
+5. **Anonymous Voting**: Members generate ZK proofs proving membership and preventing double-voting without revealing their identity
+
+**Result**: Maintains whitelist security while achieving complete voting anonymity.
+
 ## 🚀 Quick Start
 
 ```bash
@@ -62,6 +74,10 @@ test/
 - OpenZeppelin
 - Semaphore Protocol
 - EIP-1167 Minimal Proxy
+
+## 🎯 Conclusion
+
+Using the EIP-1167 minimal proxy pattern gives this project a major advantage: every condominium DAO can be deployed at a fraction of the normal gas cost, since all clones point to a single audited template while keeping fully independent storage and governance. This means we only need to audit the core logic once, and then hundreds of communities can launch their own DAOs cheaply and safely. For example, instead of each building paying millions of gas units to deploy a full contract, they can create a new DAO instance for around 45k gas, just like how Gnosis Safe or Uniswap deploy vaults and pools at scale. If one community ever needs different governance logic, a new template can be introduced without affecting the existing ones, preserving both efficiency and flexibility.
 
 ## ⚠️ Security Notice
 
