@@ -15,8 +15,10 @@ contract DAO is OwnableUpgradeable {
     mapping(uint256 => Proposal) public proposals;
     mapping(uint256 => mapping(address => bool)) public votes;
     mapping(address => uint256) public allowances;
+    mapping(address => uint256) public commitments;
 
     address[] private membersKeys;
+    uint256[] public allCommitments;
     address private vaultContract;
     uint256 private totalMembers;
     uint256 public totalProposals;
@@ -216,5 +218,10 @@ contract DAO is OwnableUpgradeable {
         if (change > 0) {
             payable(msg.sender).transfer(change);
         }
+    }
+
+    function registerCommitment(uint256 _commitment) public onlyMembers {
+        commitments[msg.sender] = _commitment;
+        allCommitments.push(_commitment);
     }
 }
