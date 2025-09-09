@@ -11,22 +11,24 @@ interface GroupData {
     lastUpdated: string;
 }
 
+const DEFAULT_DEPTH = 20; // Must match DAO.MERKLE_DEPTH
+
 async function createMerkleTree(groupId: string = "condos-dao-group") {
     try {
         console.log("🌳 Creating Semaphore Merkle Tree...");
         
-        // Create a new group (which includes the Merkle Tree)
+        // Create a new group with fixed depth to match on-chain (DAO.MERKLE_DEPTH = 20)
         const group = new Group();
         
         console.log(`✅ Group created with ID: ${groupId}`);
-        console.log(`📏 Tree depth: ${group.depth}`);
+        console.log(`📏 Tree depth: ${DEFAULT_DEPTH}`);
         console.log(`👥 Initial members: ${group.members.length}`);
         
         // Save group data
         const groupData: GroupData = {
             groupId,
             members: [],
-            treeDepth: group.depth,
+            treeDepth: DEFAULT_DEPTH,
             createdAt: new Date().toISOString(),
             lastUpdated: new Date().toISOString()
         };
@@ -42,6 +44,19 @@ async function createMerkleTree(groupId: string = "condos-dao-group") {
         console.error("❌ Error creating Merkle Tree:", error);
         throw error;
     }
+}
+
+function loadGroupFromDisk(): { group: Group, groupData: GroupData } {
+    const groupDataPath = join(__dirname, "group.json");
+    if (!existsSync(groupDataPath)) {
+        throw new Error("Group not found. Create it first with: npx ts-node scripts/merkleTree.ts create");
+    }
+    const groupData: GroupData = JSON.parse(readFileSync(groupDataPath, 'utf8'));
+    const group = new Group();
+    if (groupData.members && groupData.members.length > 0) {
+        group.addMembers(groupData.members.map((m: string) => BigInt(m)));
+    }
+    return { group, groupData };
 }
 
 async function addMemberToGroup(identityPath: string, groupId: string = "condos-dao-group") {
@@ -62,8 +77,7 @@ async function addMemberToGroup(identityPath: string, groupId: string = "condos-
         let groupData: GroupData;
         
         if (existsSync(groupDataPath)) {
-            groupData = JSON.parse(readFileSync(groupDataPath, 'utf8'));
-            group = new Group(groupData.members.map(m => BigInt(m)));
+            ({ group, groupData } = loadGroupFromDisk());
         } else {
             const result = await createMerkleTree(groupId);
             group = result.group;
@@ -180,4 +194,4 @@ if (require.main === module) {
         });
 }
 
-export { createMerkleTree, addMemberToGroup, getGroupInfo };
+export { createMerkleTree, addMemberToGroup, getGroupInfo, loadGroupFromDisk, DEFAULT_DEPTH };

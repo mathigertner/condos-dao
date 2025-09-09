@@ -1,9 +1,9 @@
 import { Identity } from "@semaphore-protocol/identity";
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 
-async function createSemaphoreIdentity(daoAddress?: string, privateKey?: string) {
+async function createSemaphoreIdentity(daoAddress?: string, privateKey?: string, rpcUrl: string = "http://localhost:8545") {
     try {
         console.log("🔐 Creating Semaphore identity...");
         
@@ -40,7 +40,7 @@ async function createSemaphoreIdentity(daoAddress?: string, privateKey?: string)
         
         // If DAO address is provided, register the commitment
         if (daoAddress && privateKey) {
-            await registerCommitmentOnDAO(daoAddress, privateKey, commitment.toString());
+            await registerCommitmentOnDAO(daoAddress, privateKey, commitment.toString(), rpcUrl);
         }
         
         return identityData;
@@ -51,12 +51,12 @@ async function createSemaphoreIdentity(daoAddress?: string, privateKey?: string)
     }
 }
 
-async function registerCommitmentOnDAO(daoAddress: string, walletPrivateKey: string, commitment: string) {
+async function registerCommitmentOnDAO(daoAddress: string, walletPrivateKey: string, commitment: string, rpcUrl: string = "http://localhost:8545") {
     try {
         console.log("📝 Registering commitment on DAO contract...");
         
-        // Connect to the network (you might need to adjust this)
-        const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545"); // Adjust URL
+        // Connect to the network (parametrized)
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
         const wallet = new ethers.Wallet(walletPrivateKey, provider);
         
         // DAO contract ABI (you'll need to add the registerCommitment function)
@@ -68,8 +68,8 @@ async function registerCommitmentOnDAO(daoAddress: string, walletPrivateKey: str
         const daoContract = new ethers.Contract(daoAddress, daoABI, wallet);
         
         // Check if user is a member
-        const memberRole = await daoContract.members(wallet.address);
-        if (memberRole === 0) {
+        const memberRole: BigNumber = await daoContract.members(wallet.address);
+        if (memberRole.eq(0)) {
             throw new Error("You must be a member of the DAO to register a commitment");
         }
         
@@ -93,7 +93,8 @@ async function main() {
     if (args.length >= 2) {
         const daoAddress = args[0];
         const walletPrivateKey = args[1];
-        await createSemaphoreIdentity(daoAddress, walletPrivateKey);
+        const rpcUrl = args[2] || "http://localhost:8545";
+        await createSemaphoreIdentity(daoAddress, walletPrivateKey, rpcUrl);
     } else {
         await createSemaphoreIdentity();
     }

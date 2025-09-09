@@ -177,14 +177,20 @@ describe("DAO Semaphore Advanced Integration", () => {
       proposalId = 1;
     });
 
-    it("Should reject invalid proof format", async () => {
-      const invalidProof = [1, 2, 3]; // Wrong length
-      const mockNullifierHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test"));
+    it("Should reject invalid inputs (nullifier/signal)", async () => {
+      const mockProof = [1, 2, 3, 4, 5, 6, 7, 8];
+      const mockNullifierHash = ethers.constants.Zero;
       const mockSignalHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test"));
       
       await expect(
-        dao.voteAnonymously(proposalId, true, invalidProof, mockNullifierHash, mockSignalHash)
-      ).to.be.revertedWith("Invalid proof format");
+        dao.voteAnonymously(proposalId, true, mockProof, mockNullifierHash, mockSignalHash)
+      ).to.be.revertedWith("Invalid nullifier hash");
+
+      const validNullifier = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("valid"));
+      const zeroSignal = ethers.constants.Zero;
+      await expect(
+        dao.voteAnonymously(proposalId, true, mockProof, validNullifier, zeroSignal)
+      ).to.be.revertedWith("Invalid signal hash");
     });
 
     it("Should reject proof with wrong Merkle root", async () => {

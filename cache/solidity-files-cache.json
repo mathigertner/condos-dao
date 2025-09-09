@@ -1,8 +1,8 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAO.sol": {
-      "lastModificationDate": 1757392150891,
+    "/home/bogo/condos-dao/contracts/DAO.sol": {
+      "lastModificationDate": 1757392392037,
       "contentHash": "0a903cca8ead9ea976995839110f6200",
       "sourceName": "contracts/DAO.sol",
       "solcConfig": {
@@ -41,47 +41,8 @@
         "DAO"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
-      "lastModificationDate": 1757383249310,
-      "contentHash": "a70d53f7e468306c02c529ecaa1d59c5",
-      "sourceName": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/ContextUpgradeable.sol",
-        "../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "OwnableUpgradeable"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/Semaphore.sol": {
-      "lastModificationDate": 1757385333182,
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/Semaphore.sol": {
+      "lastModificationDate": 1757387673162,
       "contentHash": "cdd7c49fd7633902b3f2cf741a7e43c3",
       "sourceName": "@semaphore-protocol/contracts/Semaphore.sol",
       "solcConfig": {
@@ -121,8 +82,47 @@
         "Semaphore"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphore.sol": {
-      "lastModificationDate": 1757385333186,
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+      "lastModificationDate": 1757387678977,
+      "contentHash": "a70d53f7e468306c02c529ecaa1d59c5",
+      "sourceName": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/ContextUpgradeable.sol",
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "OwnableUpgradeable"
+      ]
+    },
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphore.sol": {
+      "lastModificationDate": 1757387673455,
       "contentHash": "c7e4b7d4d5ac5578a8e6438c2bb2e666",
       "sourceName": "@semaphore-protocol/contracts/interfaces/ISemaphore.sol",
       "solcConfig": {
@@ -157,120 +157,8 @@
         "ISemaphore"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
-      "lastModificationDate": 1757383249298,
-      "contentHash": "b6dfb72ff1fd764f725ec4db364b1b20",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ContextUpgradeable"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
-      "lastModificationDate": 1757383249309,
-      "contentHash": "b0970a564d121abf9adfff8d1a01eb16",
-      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../../utils/AddressUpgradeable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.2"
-      ],
-      "artifacts": [
-        "Initializable"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
-      "lastModificationDate": 1757383249297,
-      "contentHash": "c30c805386fda8a42ff515da963d3a95",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.1"
-      ],
-      "artifacts": [
-        "AddressUpgradeable"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol": {
-      "lastModificationDate": 1757385333187,
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol": {
+      "lastModificationDate": 1757387673515,
       "contentHash": "d0b7e626e52726ae20e86c169289b848",
       "sourceName": "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol",
       "solcConfig": {
@@ -305,42 +193,8 @@
         "ISemaphoreVerifier"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/base/Constants.sol": {
-      "lastModificationDate": 1757385333183,
-      "contentHash": "40b7091f14ee398362f76c1bc4dc20c1",
-      "sourceName": "@semaphore-protocol/contracts/base/Constants.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.8.23 <0.9.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreGroups.sol": {
-      "lastModificationDate": 1757385333183,
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreGroups.sol": {
+      "lastModificationDate": 1757387673251,
       "contentHash": "215932048b6f8e69ef685042d208201c",
       "sourceName": "@semaphore-protocol/contracts/base/SemaphoreGroups.sol",
       "solcConfig": {
@@ -378,8 +232,42 @@
         "SemaphoreGroups"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphoreGroups.sol": {
-      "lastModificationDate": 1757385333187,
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/base/Constants.sol": {
+      "lastModificationDate": 1757387673213,
+      "contentHash": "40b7091f14ee398362f76c1bc4dc20c1",
+      "sourceName": "@semaphore-protocol/contracts/base/Constants.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.23 <0.9.0"
+      ],
+      "artifacts": []
+    },
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/interfaces/ISemaphoreGroups.sol": {
+      "lastModificationDate": 1757387673485,
       "contentHash": "31eaf7e43971631370f584f7fa0a9065",
       "sourceName": "@semaphore-protocol/contracts/interfaces/ISemaphoreGroups.sol",
       "solcConfig": {
@@ -414,8 +302,8 @@
         "ISemaphoreGroups"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@zk-kit/lean-imt.sol/InternalLeanIMT.sol": {
-      "lastModificationDate": 1757385333134,
+    "/home/bogo/condos-dao/node_modules/@zk-kit/lean-imt.sol/InternalLeanIMT.sol": {
+      "lastModificationDate": 1757387673102,
       "contentHash": "d2559532b41cd344b6f5fc28720d194d",
       "sourceName": "@zk-kit/lean-imt.sol/InternalLeanIMT.sol",
       "solcConfig": {
@@ -453,8 +341,8 @@
         "InternalLeanIMT"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/poseidon-solidity/PoseidonT3.sol": {
-      "lastModificationDate": 1757385332490,
+    "/home/bogo/condos-dao/node_modules/poseidon-solidity/PoseidonT3.sol": {
+      "lastModificationDate": 1757387673974,
       "contentHash": "88a3db6023abdf06f44823c05f81f69e",
       "sourceName": "poseidon-solidity/PoseidonT3.sol",
       "solcConfig": {
@@ -489,8 +377,8 @@
         "PoseidonT3"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@zk-kit/lean-imt.sol/Constants.sol": {
-      "lastModificationDate": 1757385333134,
+    "/home/bogo/condos-dao/node_modules/@zk-kit/lean-imt.sol/Constants.sol": {
+      "lastModificationDate": 1757387673047,
       "contentHash": "f8b2aa1a7d19380722cb6045ffc42c0f",
       "sourceName": "@zk-kit/lean-imt.sol/Constants.sol",
       "solcConfig": {
@@ -523,8 +411,120 @@
       ],
       "artifacts": []
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAOFactory.sol": {
-      "lastModificationDate": 1757392058703,
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+      "lastModificationDate": 1757387677876,
+      "contentHash": "b6dfb72ff1fd764f725ec4db364b1b20",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ContextUpgradeable"
+      ]
+    },
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+      "lastModificationDate": 1757387678901,
+      "contentHash": "b0970a564d121abf9adfff8d1a01eb16",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/AddressUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
+    },
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+      "lastModificationDate": 1757387677808,
+      "contentHash": "c30c805386fda8a42ff515da963d3a95",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "AddressUpgradeable"
+      ]
+    },
+    "/home/bogo/condos-dao/contracts/DAOFactory.sol": {
+      "lastModificationDate": 1757390774351,
       "contentHash": "287165c012f341f2ff741a274583789a",
       "sourceName": "contracts/DAOFactory.sol",
       "solcConfig": {
@@ -566,8 +566,8 @@
         "DAOFactory"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1757383249138,
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1757387678777,
       "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
@@ -604,8 +604,8 @@
         "Ownable"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts/proxy/Clones.sol": {
-      "lastModificationDate": 1757383249124,
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts/proxy/Clones.sol": {
+      "lastModificationDate": 1757387677477,
       "contentHash": "89c075565795af5e3e88fc75642a4af8",
       "sourceName": "@openzeppelin/contracts/proxy/Clones.sol",
       "solcConfig": {
@@ -640,80 +640,8 @@
         "Clones"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1757383249124,
-      "contentHash": "f07feb4a44b1a4872370da5aa70e8e46",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Context"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/Vault.sol": {
-      "lastModificationDate": 1757383036566,
-      "contentHash": "3695db15921850975778c3bc1a2e2150",
-      "sourceName": "contracts/Vault.sol",
-      "solcConfig": {
-        "version": "0.8.23",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "Vault"
-      ]
-    },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreVerifier.sol": {
-      "lastModificationDate": 1757385333184,
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreVerifier.sol": {
+      "lastModificationDate": 1757387673277,
       "contentHash": "e28f1bec80e826fb56317b9c755f1b1e",
       "sourceName": "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol",
       "solcConfig": {
@@ -751,8 +679,44 @@
         "SemaphoreVerifier"
       ]
     },
-    "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreVerifierKeyPts.sol": {
-      "lastModificationDate": 1757385333185,
+    "/home/bogo/condos-dao/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1757387677494,
+      "contentHash": "f07feb4a44b1a4872370da5aa70e8e46",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/home/bogo/condos-dao/node_modules/@semaphore-protocol/contracts/base/SemaphoreVerifierKeyPts.sol": {
+      "lastModificationDate": 1757387673379,
       "contentHash": "f950b01fa5ba9f45f279261ca7766036",
       "sourceName": "@semaphore-protocol/contracts/base/SemaphoreVerifierKeyPts.sol",
       "solcConfig": {
@@ -786,6 +750,80 @@
       "artifacts": [
         "SemaphoreVerifierKeyPts"
       ]
+    },
+    "/home/bogo/condos-dao/contracts/Vault.sol": {
+      "lastModificationDate": 1757382837037,
+      "contentHash": "3695db15921850975778c3bc1a2e2150",
+      "sourceName": "contracts/Vault.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Vault"
+      ]
+    },
+    "/home/bogo/condos-dao/contracts/ExternalImports.sol": {
+      "lastModificationDate": 1757397089455,
+      "contentHash": "879d480f9fb9c2cfa7e6673ac56c5993",
+      "sourceName": "contracts/ExternalImports.sol",
+      "solcConfig": {
+        "version": "0.8.23",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol",
+        "@semaphore-protocol/contracts/Semaphore.sol",
+        "poseidon-solidity/PoseidonT3.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.23"
+      ],
+      "artifacts": []
     }
   }
 }
