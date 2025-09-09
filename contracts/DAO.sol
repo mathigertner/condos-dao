@@ -1,11 +1,15 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
+import "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol";
 
 // AGREGAR VALIDACION DE NO PERMITIR VOTOS SI HAY DEUDAS //
 
-contract DAO is OwnableUpgradeable {
+contract DAO is OwnableUpgradeable, SemaphoreGroups, SemaphoreVerifier {
     uint256 public constant VERSION = 100;
+    uint8 public constant MERKLE_DEPTH = 20;
+    uint256 public constant GROUP_ID = 1;
 
     // 1 => normal, 2 => proposer, 3 => admin
     mapping(address => uint256) public members;
@@ -32,6 +36,7 @@ contract DAO is OwnableUpgradeable {
         uint256 negativeCount;
         uint256 moneyAmount;
         bool expired;
+        uint256 groupRoot;
     }
 
     struct Debt {
@@ -44,7 +49,8 @@ contract DAO is OwnableUpgradeable {
 
     function initialize(address _owner) public initializer {
         __Ownable_init();
-        addMember(_owner, 3);
+        addMemberDAO(_owner, 3);
+        createGroup(GROUP_ID, MERKLE_DEPTH, address(this));
     }
 
     modifier onlyMembers() {
@@ -92,7 +98,7 @@ contract DAO is OwnableUpgradeable {
         );
 
         Proposal memory _proposal;
-
+        _proposal.groupRoot = getRoot(GROUP_ID);
         _proposal.description = description;
         _proposal.expirationDate = expirationDate;
         _proposal.creationDate = block.timestamp;
@@ -156,7 +162,7 @@ contract DAO is OwnableUpgradeable {
         return true;
     }
 
-    function addMember(address _member, uint256 role) public onlyAdmins {
+    function addMemberDAO(address _member, uint256 role) public onlyAdmins {
         if (members[_member] <= 0) {
             membersKeys.push(_member);
         }
@@ -221,6 +227,8 @@ contract DAO is OwnableUpgradeable {
     }
 
     function registerCommitment(uint256 _commitment) public onlyMembers {
+        addMember(GROUP_ID, _commitment);
+
         commitments[msg.sender] = _commitment;
         allCommitments.push(_commitment);
     }
