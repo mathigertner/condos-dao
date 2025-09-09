@@ -5,6 +5,8 @@ const { deployContract, provider, solidity } = waffle;
 const DAO = require("../artifacts/contracts/DAO.sol/DAO.json");
 const DAOFactory = require("../artifacts/contracts/DAOFactory.sol/DAOFactory.json");
 const { Contract, ethers } = require("ethers");
+const linker = require("solc/linker");
+const PoseidonT3 = require("../artifacts/poseidon-solidity/PoseidonT3.sol/PoseidonT3.json");
 
 let daoTemplate;
 let daoFactory;
@@ -15,7 +17,13 @@ const [wallet, walletTo, thirdWallet] = provider.getWallets();
 
 describe("DAO", () => {
   beforeEach(async () => {
-    daoTemplate = await deployContract(wallet, DAO);
+    // Deploy PoseidonT3 library and link DAO bytecode
+    const poseidon = await deployContract(wallet, PoseidonT3);
+    const linkedBytecode = linker.linkBytecode(DAO.bytecode, {
+      "poseidon-solidity/PoseidonT3.sol:PoseidonT3": poseidon.address,
+    });
+
+    daoTemplate = await deployContract(wallet, { abi: DAO.abi, bytecode: linkedBytecode });
     await daoTemplate.initialize(wallet.address);
 
     daoFactory = await deployContract(wallet, DAOFactory, [

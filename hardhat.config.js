@@ -37,6 +37,7 @@ module.exports = {
       name: "hardhat",
       gas: "auto",
       gasPrice: "auto",
+      allowUnlimitedContractSize: true,
     },
   },
 };

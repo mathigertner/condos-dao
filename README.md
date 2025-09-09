@@ -82,3 +82,4 @@ Using the EIP-1167 minimal proxy pattern gives this project a major advantage: e
 ## ⚠️ Security Notice
 
 This is a development version. Please ensure thorough testing and security audits before any mainnet deployment.
+# Condos DAO - Anonymous Voting System with Semaphore
