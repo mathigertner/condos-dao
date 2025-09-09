@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join } from "path";
 
 interface GroupData {
-    groupId: string;
+    groupId: number;
     members: string[];
     treeDepth: number;
     createdAt: string;
@@ -12,8 +12,10 @@ interface GroupData {
 }
 
 const DEFAULT_DEPTH = 20; // Must match DAO.MERKLE_DEPTH
+// const DEFAULT_GROUP_ID = "condos-dao-group";
+const DEFAULT_GROUP_ID = 0;
 
-async function createMerkleTree(groupId: string = "condos-dao-group") {
+async function createMerkleTree(groupId: number = DEFAULT_GROUP_ID) {
     try {
         console.log("🌳 Creating Semaphore Merkle Tree...");
         
@@ -59,7 +61,7 @@ function loadGroupFromDisk(): { group: Group, groupData: GroupData } {
     return { group, groupData };
 }
 
-async function addMemberToGroup(identityPath: string, groupId: string = "condos-dao-group") {
+async function addMemberToGroup(identityPath: string, groupId: number = DEFAULT_GROUP_ID) {
     try {
         console.log("👤 Adding member to group...");
         
@@ -69,7 +71,6 @@ async function addMemberToGroup(identityPath: string, groupId: string = "condos-
         }
         
         const identityData = JSON.parse(readFileSync(identityPath, 'utf8'));
-        const identity = new Identity(identityData.privateKey);
         
         // Load or create group
         const groupDataPath = join(__dirname, "group.json");
@@ -84,8 +85,8 @@ async function addMemberToGroup(identityPath: string, groupId: string = "condos-
             groupData = result.groupData;
         }
         
-        // Add new member
-        const commitment = identity.commitment;
+        // Add new member using the commitment from the file
+        const commitment = BigInt(identityData.commitment);
         group.addMember(commitment);
         
         // Update group data
@@ -110,7 +111,7 @@ async function addMemberToGroup(identityPath: string, groupId: string = "condos-
     }
 }
 
-async function getGroupInfo(groupId: string = "condos-dao-group") {
+async function getGroupInfo(groupId: number = DEFAULT_GROUP_ID) {
     try {
         const groupDataPath = join(__dirname, "group.json");
         
@@ -150,18 +151,18 @@ async function main() {
     
     switch (command) {
         case "create":
-            const groupId = args[1] || "condos-dao-group";
+            const groupId = args[1] ? parseInt(args[1]) : DEFAULT_GROUP_ID;
             await createMerkleTree(groupId);
             break;
             
         case "add":
             const identityPath = args[1] || join(__dirname, "identity.json");
-            const targetGroupId = args[2] || "condos-dao-group";
+            const targetGroupId = args[2] ? parseInt(args[2]) : DEFAULT_GROUP_ID;
             await addMemberToGroup(identityPath, targetGroupId);
             break;
             
         case "info":
-            const infoGroupId = args[1] || "condos-dao-group";
+            const infoGroupId = args[1] ? parseInt(args[1]) : DEFAULT_GROUP_ID;
             await getGroupInfo(infoGroupId);
             break;
             

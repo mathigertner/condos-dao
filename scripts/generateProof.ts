@@ -35,10 +35,14 @@ async function generateSemaphoreProof(
         }
         
         const identityData = JSON.parse(readFileSync(identityPath, 'utf8'));
-        const identity = new Identity(identityData.privateKey);
+        
+        // Recreate identity correctly from the private key array
+        const privateKeyArray = identityData.privateKey.split(',').map((n: string) => parseInt(n.trim()));
+        const privateKeyBuffer = new Uint8Array(privateKeyArray);
+        const identity = new Identity(privateKeyBuffer);
         
         // Build local group from disk (must be kept in sync with on-chain)
-        const { group } = loadGroupFromDisk();
+        const { group, groupData } = loadGroupFromDisk();
 
         // Find member index by commitment
         const commitment = identity.commitment;
@@ -95,11 +99,11 @@ async function generateSemaphoreProof(
                 signalHash,
             },
             message,
-            groupId: "1",
+            groupId: groupData.groupId.toString(),
             memberIndex,
             externalNullifier,
             merkleRoot,
-            merkleTreeDepth: semaphoreProof.merkleTreeDepth,
+            merkleTreeDepth: semaphoreProof.merkleTreeDepth, // Use the actual proof depth
             scope: semaphoreProof.scope,
             createdAt: new Date().toISOString()
         };
