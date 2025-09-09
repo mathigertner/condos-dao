@@ -1,11 +1,14 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.23;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-
-// AGREGAR VALIDACION DE NO PERMITIR VOTOS SI HAY DEUDAS //
+import "@semaphore-protocol/contracts/Semaphore.sol";
+import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 
 contract DAO is OwnableUpgradeable {
     uint256 public constant VERSION = 100;
+    uint8 public constant MERKLE_DEPTH = 20;
+    Semaphore public semaphore;
+    uint256 public groupId;
 
     // 1 => normal, 2 => proposer, 3 => admin
     mapping(address => uint256) public members;
@@ -15,8 +18,11 @@ contract DAO is OwnableUpgradeable {
     mapping(uint256 => Proposal) public proposals;
     mapping(uint256 => mapping(address => bool)) public votes;
     mapping(address => uint256) public allowances;
+    mapping(address => uint256) public commitments;
+    mapping(uint256 => mapping(uint256 => bool)) public nullifierUsed;
 
     address[] private membersKeys;
+    uint256[] public allCommitments;
     address private vaultContract;
     uint256 private totalMembers;
     uint256 public totalProposals;
@@ -30,6 +36,7 @@ contract DAO is OwnableUpgradeable {
         uint256 negativeCount;
         uint256 moneyAmount;
         bool expired;
+        uint256 groupRoot;
     }
 
     struct Debt {
@@ -40,9 +47,12 @@ contract DAO is OwnableUpgradeable {
         uint256 timestamp;
     }
 
-    function initialize(address _owner) public initializer {
+    function initialize(address _owner, address _semaphore) public initializer {
         __Ownable_init();
-        addMember(_owner, 3);
+        semaphore = Semaphore(_semaphore);
+        addMemberDAO(_owner, 3);
+        // Create a Semaphore group for ZK voting
+        groupId = semaphore.createGroup();
     }
 
     modifier onlyMembers() {
@@ -90,7 +100,7 @@ contract DAO is OwnableUpgradeable {
         );
 
         Proposal memory _proposal;
-
+        _proposal.groupRoot = semaphore.getMerkleTreeRoot(groupId);
         _proposal.description = description;
         _proposal.expirationDate = expirationDate;
         _proposal.creationDate = block.timestamp;
@@ -107,54 +117,99 @@ contract DAO is OwnableUpgradeable {
     ) external onlyMembers onlyDebtFree returns (bool) {
         Proposal storage p = proposals[proposalId];
 
-        // chequeo propuesta exista
-        if (p.creationDate == 0) {
-            revert("Propuesta no valida");
-        }
+        // Valid and open proposal
+        require(p.creationDate != 0, "Invalid proposal");
+        require(!p.expired, "Proposal is closed");
 
-        // chequeo si esta expirada
-        if (p.expired) {
-            revert("Propuesta ha expirado");
-        }
+        // Prevent double voting by address (non-anonymous vote)
+        require(!votes[proposalId][msg.sender], "Already voted");
+        votes[proposalId][msg.sender] = true;
 
-        // chequeo si expiró y recien me doy cuenta
-        if (p.expirationDate < block.timestamp) {
-            p.expired = true;
-
-            if (p.moneyAmount > 0 && p.positiveCount > p.negativeCount) {
-                Debt memory _debt;
-                _debt.timestamp = block.timestamp;
-                _debt.amount = p.moneyAmount / membersKeys.length;
-                _debt.proposalId = proposalId;
-
-                for (uint256 i = 0; i < membersKeys.length; i++) {
-                    _debt.id = ++totalDebts[msg.sender];
-                    debts[membersKeys[i]].push(_debt);
-                    debtsCounter[membersKeys[i]] += _debt.amount;
-                }
-
-                // libero el dinero
-                allowances[p.proposer] = p.moneyAmount;
-            }
-
-            return false;
-        }
-
-        // chequeo doble voto y voto en caso +
-        if (!votes[proposalId][msg.sender]) {
-            votes[proposalId][msg.sender] = true;
-
-            if (voteValue) {
-                p.positiveCount = p.positiveCount + 1;
-            } else {
-                p.negativeCount = p.negativeCount + 1;
-            }
+        // Count the vote
+        if (voteValue) {
+            p.positiveCount += 1;
+        } else {
+            p.negativeCount += 1;
         }
 
         return true;
     }
 
-    function addMember(address _member, uint256 role) public onlyAdmins {
+    function zkVote(
+        uint256 proposalId,
+        uint256 signal, // 1 = yes, 0 = no
+        uint256 nullifierHash, // prevents double anonymous voting
+        uint256[8] calldata proof // Groth16 proof from Semaphore
+    ) external onlyDebtFree returns (bool) {
+        Proposal storage p = proposals[proposalId];
+
+        // Valid and open proposal
+        require(p.creationDate != 0, "Invalid proposal");
+        require(!p.expired, "Proposal is closed");
+        require(signal == 0 || signal == 1, "Invalid signal");
+
+        // Prevent double voting by nullifier for this proposal
+        require(!nullifierUsed[proposalId][nullifierHash], "Duplicate vote");
+
+        // Uniqueness tied to this proposal
+        uint256 externalNullifier = uint256(
+            keccak256(abi.encodePacked("DAO_VOTE", address(this), proposalId))
+        );
+
+        // ZK verification: group membership + uniqueness
+        ISemaphore.SemaphoreProof memory semaphoreProof = ISemaphore
+            .SemaphoreProof({
+                merkleTreeDepth: MERKLE_DEPTH,
+                merkleTreeRoot: p.groupRoot,
+                nullifier: nullifierHash,
+                message: signal,
+                scope: externalNullifier,
+                points: proof
+            });
+
+        require(
+            semaphore.verifyProof(groupId, semaphoreProof),
+            "Invalid ZK proof"
+        );
+
+        // Mark nullifier as used and count the vote
+        nullifierUsed[proposalId][nullifierHash] = true;
+
+        if (signal == 1) {
+            p.positiveCount += 1;
+        } else {
+            p.negativeCount += 1;
+        }
+
+        return true;
+    }
+
+    function closeProposal(uint256 proposalId) external onlyAdmins {
+        Proposal storage p = proposals[proposalId];
+        require(p.creationDate != 0, "Invalid proposal");
+        require(!p.expired, "Already closed");
+        require(block.timestamp >= p.expirationDate, "Not yet expired");
+
+        p.expired = true;
+
+        // If applicable, distribute debts and enable allowance to the proposer
+        if (p.moneyAmount > 0 && p.positiveCount > p.negativeCount) {
+            Debt memory _debt;
+            _debt.timestamp = block.timestamp;
+            _debt.amount = p.moneyAmount / membersKeys.length;
+            _debt.proposalId = proposalId;
+
+            for (uint256 i = 0; i < membersKeys.length; i++) {
+                _debt.id = ++totalDebts[membersKeys[i]];
+                debts[membersKeys[i]].push(_debt);
+                debtsCounter[membersKeys[i]] += _debt.amount;
+            }
+
+            allowances[p.proposer] = p.moneyAmount;
+        }
+    }
+
+    function addMemberDAO(address _member, uint256 role) public onlyAdmins {
         if (members[_member] <= 0) {
             membersKeys.push(_member);
         }
@@ -216,5 +271,16 @@ contract DAO is OwnableUpgradeable {
         if (change > 0) {
             payable(msg.sender).transfer(change);
         }
+    }
+
+    function registerCommitment(
+        address _member,
+        uint256 _commitment
+    ) public onlyAdmins {
+        require(members[_member] > 0, "Address is not a DAO member");
+        semaphore.addMember(groupId, _commitment);
+
+        commitments[_member] = _commitment;
+        allCommitments.push(_commitment);
     }
 }

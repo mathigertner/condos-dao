@@ -5,6 +5,8 @@ const { deployContract, provider, solidity } = waffle;
 const DAO = require("../artifacts/contracts/DAO.sol/DAO.json");
 const DAOFactory = require("../artifacts/contracts/DAOFactory.sol/DAOFactory.json");
 const { Contract, ethers } = require("ethers");
+const linker = require("solc/linker");
+const PoseidonT3 = require("../artifacts/poseidon-solidity/PoseidonT3.sol/PoseidonT3.json");
 
 let daoTemplate;
 let daoFactory;
@@ -15,7 +17,13 @@ const [wallet, walletTo, thirdWallet] = provider.getWallets();
 
 describe("DAO", () => {
   beforeEach(async () => {
-    daoTemplate = await deployContract(wallet, DAO);
+    // Deploy PoseidonT3 library and link DAO bytecode
+    const poseidon = await deployContract(wallet, PoseidonT3);
+    const linkedBytecode = linker.linkBytecode(DAO.bytecode, {
+      "poseidon-solidity/PoseidonT3.sol:PoseidonT3": poseidon.address,
+    });
+
+    daoTemplate = await deployContract(wallet, { abi: DAO.abi, bytecode: linkedBytecode });
     await daoTemplate.initialize(wallet.address);
 
     daoFactory = await deployContract(wallet, DAOFactory, [
@@ -28,18 +36,18 @@ describe("DAO", () => {
     currentTimestamp = (await provider.getBlock("latest")).timestamp;
   });
 
-  describe("addMember", () => {
+  describe("addMemberDAO", () => {
     it("Should be able to add a new admin if you are admin/owner or not allowed if not", async () => {
-      await dao.addMember(walletTo.address, 3);
+      await dao.addMemberDAO(walletTo.address, 3);
       expect(await dao.members(walletTo.address)).to.equal(3);
 
       const daoFromAdminAccount = dao.connect(walletTo);
-      await daoFromAdminAccount.addMember(thirdWallet.address, 1);
+      await daoFromAdminAccount.addMemberDAO(thirdWallet.address, 1);
       expect(await dao.members(thirdWallet.address)).to.equal(1);
 
       const daoFromNotAdminAccount = dao.connect(thirdWallet);
       await expect(
-        daoFromNotAdminAccount.addMember(ethers.constants.AddressZero, 1)
+        daoFromNotAdminAccount.addMemberDAO(ethers.constants.AddressZero, 1)
       ).to.be.reverted;
     });
   });
@@ -61,7 +69,7 @@ describe("DAO", () => {
       const oneWeek = 7 * 24 * 60 * 60;
       const newTimestamp = currentTimestamp + oneWeek;
       const description = "New proposal";
-      await dao.addMember(walletTo.address, 1);
+      await dao.addMemberDAO(walletTo.address, 1);
       const daoFromNotAdminAccount = dao.connect(walletTo);
 
       // test
@@ -84,7 +92,7 @@ describe("DAO", () => {
       await dao.propose(description, newTimestamp, 100);
 
       // add new member
-      await dao.addMember(walletTo.address, 1);
+      await dao.addMemberDAO(walletTo.address, 1);
 
       // vote
       const daoFromMemberAccount = dao.connect(walletTo);
@@ -109,7 +117,7 @@ describe("DAO", () => {
       await dao.propose(description, newTimestamp, moneyAmount);
 
       // add new member
-      await dao.addMember(walletTo.address, 1);
+      await dao.addMemberDAO(walletTo.address, 1);
 
       // vote
       const daoFromMemberAccount = dao.connect(walletTo);
@@ -148,7 +156,7 @@ describe("DAO", () => {
       const description = "New proposal";
       const moneyAmount = 1000;
       await dao.propose(description, newTimestamp, moneyAmount);
-      await dao.addMember(walletTo.address, 1);
+      await dao.addMemberDAO(walletTo.address, 1);
       const daoFromMemberAccount = dao.connect(walletTo);
       await daoFromMemberAccount.vote(1, true);
       const twoWeeks = 14 * 24 * 60 * 60;
@@ -197,7 +205,7 @@ describe("DAO", () => {
       //   const description = "New proposal";
       //   const moneyAmount = 1000;
       //   await dao.propose(description, newTimestamp, moneyAmount);
-      //   await dao.addMember(walletTo.address, 1);
+      //   await dao.addMemberDAO(walletTo.address, 1);
       //   const daoFromMemberAccount = dao.connect(walletTo);
       //   await daoFromMemberAccount.vote(1, true);
       //   const twoWeeks = 14 * 24 * 60 * 60;
