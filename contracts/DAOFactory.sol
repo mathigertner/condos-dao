@@ -4,9 +4,6 @@ pragma solidity ^0.8.23;
 import "./DAO.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "@semaphore-protocol/contracts/Semaphore.sol";
-import "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol";
-import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
 
 contract DAOFactory is Ownable {
     //~~~~ State variables ~~~~
@@ -15,17 +12,10 @@ contract DAOFactory is Ownable {
     address[] public daosCreated;
 
     event NewClone(address indexed _instance);
-    event NewSemaphore(address indexed _semaphore);
 
-    constructor(address template) {
+    constructor(address template, address _semaphore) {
         templateDAO = template;
-        SemaphoreVerifier verifier = new SemaphoreVerifier();
-        Semaphore semaphore = new Semaphore(
-            ISemaphoreVerifier(address(verifier))
-        );
-        semaphoreContract = address(semaphore);
-
-        emit NewSemaphore(semaphoreContract);
+        semaphoreContract = _semaphore;
     }
 
     function createDAO() public onlyOwner returns (address) {
