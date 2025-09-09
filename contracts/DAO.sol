@@ -4,15 +4,11 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 
-// AGREGAR VALIDACION DE NO PERMITIR VOTOS SI HAY DEUDAS //
-
 contract DAO is OwnableUpgradeable {
     uint256 public constant VERSION = 100;
     uint8 public constant MERKLE_DEPTH = 20;
-    uint256 public constant GROUP_ID = 1;
-
-    // Semaphore instance for ZK proofs
     Semaphore public semaphore;
+    uint256 public groupId;
 
     // 1 => normal, 2 => proposer, 3 => admin
     mapping(address => uint256) public members;
@@ -56,7 +52,7 @@ contract DAO is OwnableUpgradeable {
         semaphore = Semaphore(_semaphore);
         addMemberDAO(_owner, 3);
         // Create a Semaphore group for ZK voting
-        semaphore.createGroup(address(this));
+        groupId = semaphore.createGroup();
     }
 
     modifier onlyMembers() {
@@ -104,7 +100,7 @@ contract DAO is OwnableUpgradeable {
         );
 
         Proposal memory _proposal;
-        _proposal.groupRoot = semaphore.getMerkleTreeRoot(GROUP_ID);
+        _proposal.groupRoot = semaphore.getMerkleTreeRoot(groupId);
         _proposal.description = description;
         _proposal.expirationDate = expirationDate;
         _proposal.creationDate = block.timestamp;
@@ -172,7 +168,7 @@ contract DAO is OwnableUpgradeable {
             });
 
         require(
-            semaphore.verifyProof(GROUP_ID, semaphoreProof),
+            semaphore.verifyProof(groupId, semaphoreProof),
             "Invalid ZK proof"
         );
 
@@ -282,8 +278,7 @@ contract DAO is OwnableUpgradeable {
         uint256 _commitment
     ) public onlyAdmins {
         require(members[_member] > 0, "Address is not a DAO member");
-
-        semaphore.addMember(GROUP_ID, _commitment);
+        semaphore.addMember(groupId, _commitment);
 
         commitments[_member] = _commitment;
         allCommitments.push(_commitment);

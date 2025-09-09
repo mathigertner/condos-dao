@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAO.sol": {
-      "lastModificationDate": 1757392150891,
-      "contentHash": "0a903cca8ead9ea976995839110f6200",
+      "lastModificationDate": 1757396438778,
+      "contentHash": "6bc5ffd92be9bebe43557c87c365531d",
       "sourceName": "contracts/DAO.sol",
       "solcConfig": {
         "version": "0.8.23",
@@ -524,8 +524,8 @@
       "artifacts": []
     },
     "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAOFactory.sol": {
-      "lastModificationDate": 1757392058703,
-      "contentHash": "287165c012f341f2ff741a274583789a",
+      "lastModificationDate": 1757396346356,
+      "contentHash": "5507cae065ef0650330d0eb660b305fe",
       "sourceName": "contracts/DAOFactory.sol",
       "solcConfig": {
         "version": "0.8.23",
@@ -554,10 +554,7 @@
       "imports": [
         "./DAO.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/proxy/Clones.sol",
-        "@semaphore-protocol/contracts/Semaphore.sol",
-        "@semaphore-protocol/contracts/base/SemaphoreVerifier.sol",
-        "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol"
+        "@openzeppelin/contracts/proxy/Clones.sol"
       ],
       "versionPragmas": [
         "^0.8.23"
@@ -721,7 +718,7 @@
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 200
+            "runs": 1
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -760,7 +757,7 @@
         "settings": {
           "optimizer": {
             "enabled": true,
-            "runs": 200
+            "runs": 1
           },
           "evmVersion": "paris",
           "outputSelection": {
