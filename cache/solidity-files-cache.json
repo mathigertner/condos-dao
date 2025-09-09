@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAO.sol": {
-      "lastModificationDate": 1757389206826,
-      "contentHash": "4c6c3360e6c1bd290b22a9a866b74334",
+      "lastModificationDate": 1757392150891,
+      "contentHash": "0a903cca8ead9ea976995839110f6200",
       "sourceName": "contracts/DAO.sol",
       "solcConfig": {
         "version": "0.8.23",
@@ -524,7 +524,7 @@
       "artifacts": []
     },
     "/Users/mathiasgertner/Documents/Projects/UPC/condos-dao/contracts/DAOFactory.sol": {
-      "lastModificationDate": 1757389152048,
+      "lastModificationDate": 1757392058703,
       "contentHash": "287165c012f341f2ff741a274583789a",
       "sourceName": "contracts/DAOFactory.sol",
       "solcConfig": {

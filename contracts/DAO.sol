@@ -277,10 +277,15 @@ contract DAO is OwnableUpgradeable {
         }
     }
 
-    function registerCommitment(uint256 _commitment) public onlyMembers {
+    function registerCommitment(
+        address _member,
+        uint256 _commitment
+    ) public onlyAdmins {
+        require(members[_member] > 0, "Address is not a DAO member");
+
         semaphore.addMember(GROUP_ID, _commitment);
 
-        commitments[msg.sender] = _commitment;
+        commitments[_member] = _commitment;
         allCommitments.push(_commitment);
     }
 }
