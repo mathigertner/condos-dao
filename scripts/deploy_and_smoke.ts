@@ -43,7 +43,12 @@ async function main() {
   const txV = await dao.vote(proposalId, true);
   await txV.wait();
   const p = await dao.getProposal(proposalId);
-  console.log("After vote: yes=", p.positiveCount.toString(), "no=", p.negativeCount.toString());
+  console.log(
+    "After vote: yes=",
+    p.positiveCount.toString(),
+    "no=",
+    p.negativeCount.toString()
+  );
 
   // 7) Persist frontend config
   const frontendDir = path.resolve(__dirname, "..", "frontend");
@@ -51,7 +56,10 @@ async function main() {
   const rpcUrl = "http://127.0.0.1:8545";
   const envContent = `VITE_RPC_URL=${rpcUrl}\nVITE_CONTRACT_ADDRESS=${daoAddr}\n`;
   fs.writeFileSync(envPath, envContent, { encoding: "utf8" });
-  fs.writeFileSync(path.join(frontendDir, "dao-local.json"), JSON.stringify({ dao: daoAddr }, null, 2));
+  fs.writeFileSync(
+    path.join(frontendDir, "dao-local.json"),
+    JSON.stringify({ dao: daoAddr }, null, 2)
+  );
   console.log("Frontend .env written:", envPath);
 }
 
@@ -59,4 +67,3 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
-
